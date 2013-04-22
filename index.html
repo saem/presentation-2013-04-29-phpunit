@@ -66,6 +66,9 @@
 		  		<section>
 		  		  <h1>Currently unit testing</h1>
 		  		</section>
+		  		<section>
+		  		  <h1>Have a high level of code coverage</h1>
+		  		</section>
 		    </section>
 
 				<!-- Example of nested vertical slides -->
@@ -87,7 +90,7 @@
 
         <section>
           <section>
-            <h1>Testing</h1>
+            <h1>PHPUnit Testing</h1>
             <h3>A Whirlwind Tour</h3>
             <aside class="notes">
             Know that it's possible, not exactly how to do it
@@ -131,32 +134,6 @@
             </code></pre>
           </section>
           <section>
-            <h1>Mocks/Stubs/Spies</h1>
-            <h3>I do all my own stunts</h3>
-            <pre><code>
-            class Fooer {
-              public function __construct($logger) { /* ... */ }
-              public function foo() {
-                /* ... */
-                $isLogged = $this->logger->log('I foo\'d.');
-                /* ... */
-              }
-            }
-            
-            class FooerTest extends PHPUnit_Framework_TestCase {
-              public function aFooerLogsEverytimeItFoos() {
-                $logger = $this->getMock('Logger');
-                $fooer = new Fooer($logger);
-                $logger->expects($this->once())
-                  ->method('log')
-                  ->with($this->equalTo('I foo\'d.'))
-                  ->will($this->returnValue(true));
-                $fooer->foo();
-              }
-            }
-            </code></pre>
-          </section>
-          <section>
             <h1>Data Driven Tests</h1>
             <pre><code>
               class FooerTest extends PHPUnit_Framework_TestCase {
@@ -186,7 +163,7 @@
                * @test
                */
               public function whenPassedBadInputAnInvalidArgumentExceptionIsThrown() {
-                $this->setExpectedException('InvalidArgumentException', 'Optionally test message');
+                $this->setExpectedException('InvalidArgumentException', 'Optionally, test message');
                 /* ... Code that throws an exception ... */
               }
             </code></pre>
@@ -204,6 +181,32 @@
             </code></pre>
             <aside class="notes">PHPUnit convers PHP errors to exceptions so test them that way</aside>
           </section>
+          <section>
+            <h1>Mocks/Stubs/Spies</h1>
+            <h3>I do all my own stunts</h3>
+            <pre><code>
+            class Fooer {
+              public function __construct($logger) { /* ... */ }
+              public function foo() {
+                /* ... */
+                $isLogged = $this->logger->log('I foo\'d.');
+                /* ... */
+              }
+            }
+            
+            class FooerTest extends PHPUnit_Framework_TestCase {
+              public function aFooerLogsEverytimeItFoos() {
+                $logger = $this->getMock('Logger');
+                $fooer = new Fooer($logger);
+                $logger->expects($this->once())
+                  ->method('log')
+                  ->with($this->equalTo('I foo\'d.'))
+                  ->will($this->returnValue(true));
+                $fooer->foo();
+              }
+            }
+            </code></pre>
+          </section>
         </section>
 
         <section>
@@ -214,6 +217,27 @@
           <section>
             <h1>phpunit.xml</h1>
             <pre><code>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+
+&lt;!-- http://www.phpunit.de/manual/current/en/appendixes.configuration.html --&gt;
+&lt;phpunit
+    backupGlobals               = "false"
+    backupStaticAttributes      = "false"
+    colors                      = "true"
+    convertErrorsToExceptions   = "true"
+    convertNoticesToExceptions  = "true"
+    convertWarningsToExceptions = "true"
+    processIsolation            = "false"
+    stopOnFailure               = "false"
+    syntaxCheck                 = "false"
+    bootstrap                   = "bootstrap.php" &gt;
+
+    &lt;testsuites&gt;
+        &lt;testsuite name="Project Test Suite"&gt;
+            &lt;directory&gt;../src/Tests&lt;/directory&gt;
+        &lt;/testsuite&gt;
+    &lt;/testsuites&gt;
+&lt;/phpunit&gt;
             </code></pre>
           </section>
           <section>
